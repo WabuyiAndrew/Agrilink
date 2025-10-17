@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* eslint-disable no-undef */
 // backend/__tests__/auth.test.js (CORRECTED)
 
@@ -6,14 +5,6 @@ import request from 'supertest';
 // NOTE: Ensure your path is correct (it should likely be '../server')
 // If your server file is named 'server.js', use:
 import app from '../app'; 
-=======
-// backend/__tests__/auth.test.js (CORRECTED)
-
-const request = require('supertest');
-// NOTE: Ensure your path is correct (it should likely be '../server')
-// If your server file is named 'server.js', use:
-const app = require('../app'); 
->>>>>>> 466a55244efea02df24c09d2b2bfeb29f33b4656
 
 // Note: For real integration tests, you MUST use a separate TEST database.
 // For this simple test, we assume the server starts correctly.

@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-=======
->>>>>>> 466a55244efea02df24c09d2b2bfeb29f33b4656
 // backend/src/middleware/errorMiddleware.js
 
 /**
  * Global Error Handler Middleware.
  * Catches errors passed via next(error) from controllers or other middleware.
-<<<<<<< HEAD
  * @param {Error} err - The error object passed from next(error).
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
@@ -36,32 +32,11 @@ export const errorHandler = (err, req, res, _next) => {
         // Log all other errors (actual failures, or errors during development/production)
         console.error(`Error [${statusCode}]: ${message}`, err.stack);
     }
-=======
- */
-const errorHandler = (err, req, res, next) => {
-    // Determine the status code: use the error's code or default to 500 (Server Error)
-    const statusCode = err.statusCode || 500;
-    
-    // Determine the message: use the error's message
-    const message = err.message || 'Something went wrong';
-    
-    // Log the error for debugging (optional, but highly recommended)
-    console.error(`Error [${statusCode}]: ${message}`);
->>>>>>> 466a55244efea02df24c09d2b2bfeb29f33b4656
 
     // Send a structured JSON response back to the client
     res.status(statusCode).json({
         message: message,
-<<<<<<< HEAD
         // Only include the stack trace if not in production mode for security
         stack: process.env.NODE_ENV === 'production' ? null : err.stack,
     });
 };
-=======
-        // Only include the stack trace in development mode for security
-        stack: process.env.NODE_ENV === 'production' ? null : err.stack,
-    });
-};
-
-module.exports = { errorHandler };
->>>>>>> 466a55244efea02df24c09d2b2bfeb29f33b4656
