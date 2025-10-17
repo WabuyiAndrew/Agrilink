@@ -7,12 +7,22 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test:prep": "dotenv -e .env.test -- npx prisma migrate deploy",
+<<<<<<< HEAD
     "test": "npm run test:prep && npm run jest:run",
     "jest:run": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit --runInBand"
   },
   "jest": {
     "testEnvironment": "node",
     "transform": {},
+=======
+    "test": "npm run test:prep && npm run jest:run", 
+    
+
+    "jest:run": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand" 
+  },
+  "jest": {
+    "testEnvironment": "node",
+>>>>>>> 466a55244efea02df24c09d2b2bfeb29f33b4656
     "setupFilesAfterEnv": ["./__tests__/setup.js"],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
@@ -20,10 +30,14 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/__tests__/setup.js"
+<<<<<<< HEAD
     ],
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     }
+=======
+    ]
+>>>>>>> 466a55244efea02df24c09d2b2bfeb29f33b4656
   },
   "dependencies": {
     "@prisma/client": "^6.17.1",
