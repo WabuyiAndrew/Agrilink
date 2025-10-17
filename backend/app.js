@@ -1,28 +1,61 @@
-// server.js
+// backend/server.js
 
-// 1. Load environment variables from .env file
-require('dotenv').config();
+// 1. IMPORT DOTENV AND CALL IT'S CONFIG METHOD
+// We need to store the return value of require('dotenv') to use it later.
+const dotenv = require('dotenv');
 
-// 2. Import Express
+// Load .env.test if NODE_ENV is 'test', otherwise load default .env
+const envPath = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+dotenv.config({ path: envPath }); // <-- Now dotenv is defined!
+
 const express = require('express');
+const { PrismaClient } = require('@prisma/client');
 
-// 3. Initialize the Express application
+// Import Middleware
+const { errorHandler } = require('./middleware/errorMiddleware');
+
+// Import Routes
+const userRoutes = require('./routes/userRoutes');
+// const listingRoutes = require('./src/routes/listingRoutes');
+// const forumRoutes = require('./src/routes/forumRoutes');
+
+// --- 1. APPLICATION DEFINITION ---
+// Initialize Express App
 const app = express();
+// NOTE: process.env.PORT is now guaranteed to be loaded from the correct .env file
+const port = process.env.PORT || 5010; 
 
-// 4. Set the port from the environment variables, or default to 5050
-// We use 5050 here, as 5000 is used by your database.
-const port = process.env.PORT || 5050; 
+// Initialize Prisma Client
+const prisma = new PrismaClient(); 
 
-// 5. Middleware (e.g., for parsing JSON body requests)
-app.use(express.json());
+// General Middleware
+app.use(express.json()); 
 
-// 6. Basic Route
+// Dependency Injection (Attaching prisma)
+app.use((req, res, next) => {
+    req.prisma = prisma;
+    next();
+});
+
+// Routes
 app.get('/', (req, res) => {
-    res.send('Agrilink API is running!');
+    res.send('✅ Agrilink API is running!');
 });
+app.use('/api/users', userRoutes);
+// app.use('/api/listings', listingRoutes);
+// app.use('/api/forum', forumRoutes);
 
-// 7. Start the server
-app.listen(port, () => {
-    // Acknowledge the use of port 5050 based on your saved preference
-    console.log(`✅ Server listening on port ${port} (http://localhost:${port})`);
-});
+// ⚠️ ERROR HANDLER MUST BE THE LAST PIECE OF MIDDLEWARE
+app.use(errorHandler);
+
+// --- 2. EXPORT AND LISTENER SEPARATION ---
+
+// Export the raw Express app object for Supertest
+module.exports = app; 
+
+// Start the server ONLY if the file is executed directly (not imported by a test runner)
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`🚀 Server listening on port ${port} (http://localhost:${port})`);
+    });
+}
